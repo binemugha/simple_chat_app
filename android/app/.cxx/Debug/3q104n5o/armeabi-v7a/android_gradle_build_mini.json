@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/benjamin/FlutterDeveloper/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/benjamin/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/benjamin/Documents/Personal/Software Projects/Flutter Projects/simple_chat_app/android/app/.cxx/Debug/3q104n5o/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/benjamin/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/benjamin/Documents/Personal/Software Projects/Flutter Projects/simple_chat_app/android/app/.cxx/Debug/3q104n5o/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

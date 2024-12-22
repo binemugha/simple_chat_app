@@ -1,0 +1,2 @@
+/Users/benjamin/Documents/Personal/Software Projects/Flutter Projects/simple_chat_app/android/app/.cxx/Debug/3q104n5o/x86_64/CMakeFiles/edit_cache.dir
+/Users/benjamin/Documents/Personal/Software Projects/Flutter Projects/simple_chat_app/android/app/.cxx/Debug/3q104n5o/x86_64/CMakeFiles/rebuild_cache.dir
