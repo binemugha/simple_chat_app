@@ -1,19 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:simple_chat_app/services/auth/auth_service.dart';
 import 'package:simple_chat_app/components/my_button.dart';
 import 'package:simple_chat_app/components/my_textfield.dart';
 
 class RegisterPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordConttroller = TextEditingController();
-  final TextEditingController _confirmPasswordConttroller = TextEditingController();
+  final TextEditingController _confirmPasswordConttroller =
+      TextEditingController();
   final void Function()? onTap;
 
   RegisterPage({super.key, required this.onTap});
 
   // login method
 
-  void register() {
-    //
+  void register(BuildContext context) async {
+    final authService = AuthService();
+
+    // try register
+    if (_passwordConttroller.text == _confirmPasswordConttroller.text) {
+      try {
+        await authService.signUpWithEmailPassword(
+          _emailController.text,
+          _passwordConttroller.text,
+        );
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(title: Text(e.toString())),
+        );
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              title: Text("Passwords don't match!"),
+              titlePadding: EdgeInsets.all(10),
+            ),
+      );
+    }
   }
 
   @override
@@ -70,7 +96,7 @@ class RegisterPage extends StatelessWidget {
             const SizedBox(height: 25),
 
             // login button
-            MyButton(text: "Register", onTap: register),
+            MyButton(text: "Register", onTap: () => register(context)),
 
             const SizedBox(height: 25),
 

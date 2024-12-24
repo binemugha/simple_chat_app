@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_chat_app/auth/login_or_register.dart';
+import 'package:simple_chat_app/services/auth/auth_gate.dart';
 import 'package:simple_chat_app/firebase_options.dart';
 import 'package:simple_chat_app/themes/light_mode.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginOrRegister(),
+      home: AuthGate(),
       theme: lightMode,
     );
   }
