@@ -53,7 +53,7 @@ class ChatService extends ChangeNotifier {
     return _firestore
         .collection("Users")
         .doc(currentUser!.uid)
-        .collection("BlockedUsers")
+        .collection("Blockedusers")
         .snapshots()
         .asyncMap((snapshot) async {
           final blockedUserIds = snapshot.docs.map((doc) => doc.id).toList();
@@ -122,11 +122,11 @@ class ChatService extends ChangeNotifier {
   }
 
   // get blocked users stream
-  Stream<List<Map<String, dynamic>>> getBlockedUsers(String userId) {
+  Stream<List<Map<String, dynamic>>> getBlockedUsersStream(String userId) {
     return _firestore
         .collection("Users")
         .doc(userId)
-        .collection("BlockedUsers")
+        .collection("Blockedusers")
         .snapshots()
         .asyncMap((snapshot) async {
           final blockedUserIds = snapshot.docs.map((doc) => doc.id).toList();
