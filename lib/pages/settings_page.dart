@@ -46,28 +46,37 @@ class SettingsPage extends StatelessWidget {
               ),
 
               // blocked users
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                margin: const EdgeInsets.all(25),
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Blocked Users"),
-                    IconButton(
-                      onPressed:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BlockedUsersPage(),
-                            ),
-                          ),
-                      icon: Icon(Icons.arrow_forward_ios_rounded),
+              GestureDetector(
+                onTap:
+                    () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlockedUsersPage(),
+                      ),
                     ),
-                  ],
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  margin: const EdgeInsets.all(25),
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Blocked Users"),
+                      IconButton(
+                        onPressed:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BlockedUsersPage(),
+                              ),
+                            ),
+                        icon: Icon(Icons.arrow_forward_ios_rounded),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
