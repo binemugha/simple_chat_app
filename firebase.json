@@ -1,1 +1,44 @@
-{"flutter":{"platforms":{"ios":{"default":{"projectId":"simple-chat-app-8a3d8","appId":"1:22676159994:ios:7247e9ee045b68793b7843","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"simple-chat-app-8a3d8","appId":"1:22676159994:ios:7247e9ee045b68793b7843","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"simple-chat-app-8a3d8","configurations":{"ios":"1:22676159994:ios:7247e9ee045b68793b7843","macos":"1:22676159994:ios:7247e9ee045b68793b7843","web":"1:22676159994:web:5e67ab68d7debfdb3b7843","windows":"1:22676159994:web:30460f0c65eeeb953b7843"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "ios": {
+        "default": {
+          "projectId": "simple-chat-app-8a3d8",
+          "appId": "1:22676159994:ios:7247e9ee045b68793b7843",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "simple-chat-app-8a3d8",
+          "appId": "1:22676159994:ios:7247e9ee045b68793b7843",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "simple-chat-app-8a3d8",
+          "configurations": {
+            "ios": "1:22676159994:ios:7247e9ee045b68793b7843",
+            "macos": "1:22676159994:ios:7247e9ee045b68793b7843",
+            "web": "1:22676159994:web:5e67ab68d7debfdb3b7843",
+            "windows": "1:22676159994:web:30460f0c65eeeb953b7843"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "source": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "europe-west1"
+    }
+  }
+}
