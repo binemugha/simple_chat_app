@@ -49,7 +49,17 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-          Expanded(child: _buildUserList()),
+          Expanded(
+            child:
+                _searchQuery.isEmpty
+                    ? Center(
+                      child: Text(
+                        'Search to chat with someone',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                    )
+                    : _buildUserList(),
+          ),
         ],
       ),
     );
