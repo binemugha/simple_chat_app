@@ -52,7 +52,7 @@ class ChatsPage extends StatelessWidget {
                     return ListTile(title: Text('Loading...'));
                   }
                   if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                    return ListTile(title: Text('Unknown user'));
+                    return SizedBox.shrink(); // Hide chat if user does not exist
                   }
                   final userData =
                       userSnapshot.data!.data() as Map<String, dynamic>;
