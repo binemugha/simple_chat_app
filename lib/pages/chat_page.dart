@@ -35,11 +35,12 @@ class _ChatPageState extends State<ChatPage> {
     }
     // Optionally, show a snackbar
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Chat cleared.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Chat cleared.')));
     }
   }
+
   bool _isBlocked = false;
   bool _loadingBlockState = true;
   @override
@@ -143,20 +144,26 @@ class _ChatPageState extends State<ChatPage> {
             onPressed: () async {
               final confirm = await showDialog<bool>(
                 context: context,
-                builder: (context) => AlertDialog(
-                  title: Text('Clear Chat'),
-                  content: Text('Are you sure you want to delete all messages in this chat?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      child: Text('Cancel'),
+                builder:
+                    (context) => AlertDialog(
+                      title: Text('Clear Chat'),
+                      content: Text(
+                        'Are you sure you want to delete all messages in this chat?',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: Text(
+                            'Delete',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
                     ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, true),
-                      child: Text('Delete', style: TextStyle(color: Colors.red)),
-                    ),
-                  ],
-                ),
               );
               if (confirm == true) {
                 await _deleteChat();
@@ -165,25 +172,25 @@ class _ChatPageState extends State<ChatPage> {
           ),
           _loadingBlockState
               ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Center(
-                    child: SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  ),
-                )
-              : TextButton(
-                  onPressed: _toggleBlock,
-                  child: Text(
-                    _isBlocked ? 'Unblock' : 'Block',
-                    style: TextStyle(
-                      color: _isBlocked ? Colors.red : Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Center(
+                  child: SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                 ),
+              )
+              : TextButton(
+                onPressed: _toggleBlock,
+                child: Text(
+                  _isBlocked ? 'Unblock' : 'Block',
+                  style: TextStyle(
+                    color: _isBlocked ? Colors.red : Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
         ],
       ),
       body: Column(
