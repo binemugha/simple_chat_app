@@ -42,6 +42,19 @@ class MyDrawer extends StatelessWidget {
                 ),
               ),
 
+              // chats list tile
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: ListTile(
+                  title: Text("C H A T S"),
+                  leading: Icon(Icons.chat),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/chats');
+                  },
+                ),
+              ),
+
               // settings list tile
               Padding(
                 padding: const EdgeInsets.only(left: 25.0),

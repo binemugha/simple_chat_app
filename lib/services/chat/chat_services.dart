@@ -4,6 +4,37 @@ import 'package:flutter/material.dart';
 import 'package:simple_chat_app/models/message.dart';
 
 class ChatService extends ChangeNotifier {
+  // Get chat rooms involving the current user, only if there are messages
+  Stream<List<Map<String, dynamic>>> getUserChats(String userId) {
+    return _firestore.collection('chat_rooms').snapshots().asyncMap((
+      snapshot,
+    ) async {
+      final List<Map<String, dynamic>> chats = [];
+      for (var doc in snapshot.docs) {
+        final chatRoomId = doc.id;
+        final ids = chatRoomId.split('_');
+        if (ids.length == 2 && ids.contains(userId)) {
+          // Only include chat rooms with at least one message
+          final messagesSnapshot =
+              await _firestore
+                  .collection('chat_rooms')
+                  .doc(chatRoomId)
+                  .collection('messages')
+                  .limit(1)
+                  .get();
+          if (messagesSnapshot.docs.isNotEmpty) {
+            String otherUserId = ids.firstWhere(
+              (id) => id != userId,
+              orElse: () => '',
+            );
+            chats.add({'chatRoomId': chatRoomId, 'otherUserId': otherUserId});
+          }
+        }
+      }
+      return chats;
+    });
+  }
+
   // get instance of firestore
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;

@@ -8,13 +8,79 @@ import 'package:simple_chat_app/services/chat/chat_services.dart';
 class ChatPage extends StatefulWidget {
   final String receiverEmail;
   final String receiverID;
-  const ChatPage({super.key, required this.receiverEmail, required this.receiverID});
+  const ChatPage({
+    super.key,
+    required this.receiverEmail,
+    required this.receiverID,
+  });
 
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
+  Future<void> _deleteChat() async {
+    final currentUser = _authService.getCurrentUser();
+    if (currentUser == null) return;
+    List<String> ids = [currentUser.uid, widget.receiverID];
+    ids.sort();
+    String chatRoomID = ids.join('_');
+    final messagesRef = FirebaseFirestore.instance
+        .collection('chat_rooms')
+        .doc(chatRoomID)
+        .collection('messages');
+    final messagesSnapshot = await messagesRef.get();
+    for (var doc in messagesSnapshot.docs) {
+      await doc.reference.delete();
+    }
+    // Optionally, show a snackbar
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Chat cleared.')),
+      );
+    }
+  }
+  bool _isBlocked = false;
+  bool _loadingBlockState = true;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _checkIfBlocked();
+  }
+
+  Future<void> _checkIfBlocked() async {
+    setState(() {
+      _loadingBlockState = true;
+    });
+    final currentUser = _authService.getCurrentUser();
+    if (currentUser == null) return;
+    final blockedDoc =
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(currentUser.uid)
+            .collection('Blockedusers')
+            .doc(widget.receiverID)
+            .get();
+    setState(() {
+      _isBlocked = blockedDoc.exists;
+      _loadingBlockState = false;
+    });
+  }
+
+  Future<void> _toggleBlock() async {
+    final currentUser = _authService.getCurrentUser();
+    if (currentUser == null) return;
+    setState(() {
+      _loadingBlockState = true;
+    });
+    if (_isBlocked) {
+      await _chatService.unBlockUser(widget.receiverID);
+    } else {
+      await _chatService.blockUser(widget.receiverID);
+    }
+    await _checkIfBlocked();
+  }
+
   // text controller
   final TextEditingController _messageController = TextEditingController();
 
@@ -68,7 +134,58 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.receiverEmail)),
+      appBar: AppBar(
+        title: Text(widget.receiverEmail),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete_outline, color: Colors.red),
+            tooltip: 'Delete/Clear Chat',
+            onPressed: () async {
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Clear Chat'),
+                  content: Text('Are you sure you want to delete all messages in this chat?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: Text('Delete', style: TextStyle(color: Colors.red)),
+                    ),
+                  ],
+                ),
+              );
+              if (confirm == true) {
+                await _deleteChat();
+              }
+            },
+          ),
+          _loadingBlockState
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Center(
+                    child: SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                )
+              : TextButton(
+                  onPressed: _toggleBlock,
+                  child: Text(
+                    _isBlocked ? 'Unblock' : 'Block',
+                    style: TextStyle(
+                      color: _isBlocked ? Colors.red : Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+        ],
+      ),
       body: Column(
         children: [Expanded(child: _buildMessageList()), _buildUserInput()],
       ),
@@ -80,16 +197,23 @@ class _ChatPageState extends State<ChatPage> {
     return StreamBuilder(
       stream: _chatService.getMessages(widget.receiverID, senderID),
       builder: (context, snapshot) {
+        if (_isBlocked) {
+          return Center(
+            child: Text(
+              'You have blocked this user. Unblock to see messages.',
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
         // errors
         if (snapshot.hasError) {
           return const Text("There is something wrong");
         }
-
         // loading
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Text("Loading...");
         }
-
         // return list view
         return ListView(
           controller: _scrollController,
@@ -127,6 +251,9 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildUserInput() {
+    if (_isBlocked) {
+      return SizedBox.shrink();
+    }
     return Padding(
       padding: const EdgeInsets.only(bottom: 50.0),
       child: Row(
