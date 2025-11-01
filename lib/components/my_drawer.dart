@@ -1,3 +1,4 @@
+import 'package:simple_chat_app/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_chat_app/services/auth/auth_service.dart';
 import 'package:simple_chat_app/pages/settings_page.dart';
@@ -19,13 +20,22 @@ class MyDrawer extends StatelessWidget {
         children: [
           Column(
             children: [
-              // logo
+              // profile icon as logo with navigation
               DrawerHeader(
-                child: Center(
-                  child: Icon(
-                    Icons.message,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 40,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()),
+                    );
+                  },
+                  child: Center(
+                    child: Icon(
+                      Icons.account_circle,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 64,
+                    ),
                   ),
                 ),
               ),
