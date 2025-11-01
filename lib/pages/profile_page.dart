@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:simple_chat_app/services/auth/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
-
 
   @override
   Widget build(BuildContext context) {
