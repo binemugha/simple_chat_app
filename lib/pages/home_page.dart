@@ -6,7 +6,7 @@ import 'package:simple_chat_app/components/my_drawer.dart';
 import 'package:simple_chat_app/services/chat/chat_services.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -81,8 +81,11 @@ class _HomePageState extends State<HomePage> {
         final filteredUsers =
             users.where((userData) {
               final email = (userData["email"] ?? '').toString().toLowerCase();
+              final username =
+                  (userData["username"] ?? '').toString().toLowerCase();
+              final searchTarget = username.isNotEmpty ? username : email;
               return email != (currentUserEmail ?? '') &&
-                  (_searchQuery.isEmpty || email.contains(_searchQuery));
+                  (_searchQuery.isEmpty || searchTarget.contains(_searchQuery));
             }).toList();
         if (filteredUsers.isEmpty) {
           return const Center(child: Text('No users found.'));
@@ -103,8 +106,13 @@ class _HomePageState extends State<HomePage> {
     Map<String, dynamic> userData,
     BuildContext context,
   ) {
+    final displayName =
+        userData["username"] != null &&
+                userData["username"].toString().isNotEmpty
+            ? userData["username"]
+            : userData["email"];
     return UserTile(
-      text: userData["email"],
+      text: displayName,
       onTap: () {
         Navigator.push(
           context,
@@ -113,6 +121,7 @@ class _HomePageState extends State<HomePage> {
                 (context) => ChatPage(
                   receiverEmail: userData["email"],
                   receiverID: userData["uid"],
+                  receiverUsername: userData["username"],
                 ),
           ),
         );

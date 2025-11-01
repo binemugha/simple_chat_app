@@ -23,22 +23,29 @@ class AuthService {
       });
       return userCredential;
     } on FirebaseAuthException catch (e) {
+      print('signInWithEmailPassword error: \\${e.code} - \\${e.message}');
       throw Exception(e.code);
     }
   }
 
   // sign up
-  Future<UserCredential> signUpWithEmailPassword(String email, password) async {
+  Future<UserCredential> signUpWithEmailPassword(
+    String email,
+    password, {
+    required String username,
+  }) async {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      _firestore.collection("Users").doc(userCredential.user!.uid).set({
+      await _firestore.collection("Users").doc(userCredential.user!.uid).set({
         "uid": userCredential.user!.uid,
         "email": email,
+        "username": username,
       });
       return userCredential;
     } on FirebaseAuthException catch (e) {
+      print('signUpWithEmailPassword error: \\${e.code} - \\${e.message}');
       throw Exception(e.code);
     }
   }

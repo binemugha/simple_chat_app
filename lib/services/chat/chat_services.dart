@@ -70,6 +70,13 @@ class ChatService extends ChangeNotifier {
     ids.sort(); // sort the ids (this ensure the chatroomID is the same for any 2 people)
     String chatRoomID = ids.join('_');
 
+    // ensure chat room document exists
+    await _firestore.collection("chat_rooms").doc(chatRoomID).set({
+      'created': true,
+      'users': [currentUserID, receiverID],
+      'createdAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
     // add new message to database
     await _firestore
         .collection("chat_rooms")

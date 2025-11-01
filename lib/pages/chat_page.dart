@@ -8,10 +8,12 @@ import 'package:simple_chat_app/services/chat/chat_services.dart';
 class ChatPage extends StatefulWidget {
   final String receiverEmail;
   final String receiverID;
+  final String? receiverUsername;
   const ChatPage({
     super.key,
     required this.receiverEmail,
     required this.receiverID,
+    this.receiverUsername,
   });
 
   @override
@@ -136,7 +138,12 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiverEmail),
+        title: Text(
+          (widget.receiverUsername != null &&
+                  widget.receiverUsername!.isNotEmpty)
+              ? widget.receiverUsername!
+              : widget.receiverEmail,
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.delete_outline, color: Colors.red),

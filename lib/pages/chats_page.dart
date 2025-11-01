@@ -56,6 +56,8 @@ class ChatsPage extends StatelessWidget {
                   }
                   final userData =
                       userSnapshot.data!.data() as Map<String, dynamic>;
+                  final otherUserName =
+                      userData['username'] ?? userData['email'] ?? 'Unknown';
                   final otherUserEmail = userData['email'] ?? 'Unknown';
                   return Card(
                     margin: const EdgeInsets.symmetric(
@@ -69,9 +71,13 @@ class ChatsPage extends StatelessWidget {
                     child: ListTile(
                       leading: Icon(Icons.person, color: Colors.black),
                       title: Text(
-                        otherUserEmail,
+                        otherUserName,
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
+                      subtitle:
+                          otherUserName != otherUserEmail
+                              ? Text(otherUserEmail)
+                              : null,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -80,6 +86,7 @@ class ChatsPage extends StatelessWidget {
                                 (context) => ChatPage(
                                   receiverEmail: otherUserEmail,
                                   receiverID: otherUserId,
+                                  receiverUsername: userData['username'],
                                 ),
                           ),
                         );

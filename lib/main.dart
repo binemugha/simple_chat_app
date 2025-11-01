@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:simple_chat_app/services/auth/auth_gate.dart';
 import 'package:simple_chat_app/firebase_options.dart';
 import 'package:simple_chat_app/themes/theme_provider.dart';
